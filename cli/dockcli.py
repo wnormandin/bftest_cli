@@ -11,6 +11,7 @@ import requests
 this = sys.modules[__name__]
 BASE_URL = 'unix://var/run/docker.sock'
 REGISTRY = 'pokeybill/bftest'
+DIGEST = 'sha256:79215d32e5896c1ccd3f57d22ee6aaa7c9d79c9c87737f2b96673186de6ab060'
 
 @click.group()
 def default():
@@ -25,11 +26,12 @@ def run(container):
 
     try:
         this.client = fetch_client()
-        this.client.pull(REGISTRY,stream=True)
+        this.client.pull(REGISTRY)
         start_container(container)
         result = health_check(container)
     except docker.errors.APIError as e:
         click.echo('[!] Docker API Error: {}'.format(e[0]))
+        raise
         sys.exit(1)
 
 @click.command()
@@ -41,7 +43,7 @@ def stop(container):
     try:
         this.client = fetch_client()
         this.client.stop(container)
-        this.client.prune_containers()
+        this.client.remove_container(container)
     except docker.errors.APIError as e:
         click.echo('[!] Error stopping container: {}'.format(e[0]))
         sys.exit(1)
@@ -60,10 +62,11 @@ def test():
 
         # Test the RUN command
         result = runner.invoke(run, [cont_name])
-        assert result.exit_code == 0, '[!] Application START failed'
+        result_txt = result.output.strip('\n')
+        assert result.exit_code == 0, '[!] Application START failed: {}'.format(result_txt)
         assert 'Your app is running on' in result.output, \
                '[!] Unexpected output: {}'.format(result.output)
-        click.echo(result.output.strip('\n'))
+        click.echo(result_txt)
 
         # Test container access
         click.echo('[*] Ensuring we can communicate with the containerized application')
@@ -74,7 +77,8 @@ def test():
 
         # Test the STOP command
         result = runner.invoke(stop, [cont_name])
-        assert result.exit_code == 0, '[!] Application STOP failed'
+        result_txt = result.output.strip('\n')
+        assert result.exit_code == 0, '[!] Application STOP failed: {}'.format(result_txt)
         click.echo('[*] Container {} stopped'.format(cont_name))
     except requests.exceptions.ConnectionError as e:
         click.echo('[!] Failed to communicate with the application')
@@ -126,7 +130,7 @@ def start_container(inst_name):
     this.client.start(inst_name)
 
 def fetch_client(base_url=BASE_URL):
-    return docker.APIClient(base_url=base_url, version='1.25')
+    return docker.APIClient(base_url=base_url, version='1.24')
 
 if __name__=="__main__":
     default()
