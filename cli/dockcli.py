@@ -14,6 +14,7 @@ REGISTRY = 'pokeybill/bftest'
 
 @click.group()
 def default():
+    """ A basic docker container management wrapper """
     pass
 
 @click.command()
