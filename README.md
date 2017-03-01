@@ -20,7 +20,7 @@ Commands:
 ```
 ### Starting/Stopping a Container
 ```
-$ python dockcli.py run funky_aardvark
+$ dockcli run funky_aardvark
 [*] Your app is running on http://127.0.0.1:8888
 $ docker ps -a
 CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS                        PORTS               NAMES
