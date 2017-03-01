@@ -1,10 +1,12 @@
 ## dockcli installation and usage
 
 ### Installation
+Installation is recommended within virtualenv
 ```
 $ git clone https://github.com/wnormandin/bftest_cli.git
 $ cd bftest_cli
-$ pip install -e .
+$ virtualenv venv && . venv/bin/activate
+(venv)$ pip install -e .
 ```
 
 ### Usage
