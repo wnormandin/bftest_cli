@@ -1,9 +1,9 @@
 ## dockcli installation and usage
 
 ### Installation
-git clone 
-cd bftest_cli
-pip install -e .
+$ git clone https://github.com/wnormandin/bftest_cli.git
+$ cd bftest_cli
+$ pip install -e .
 
 ### Usage
 Usage: dockcli COMMAND CONTAINER
