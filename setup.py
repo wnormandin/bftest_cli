@@ -9,18 +9,19 @@ setup(
     url='https://github.com/wnormandin/bftest_cli',
     author='wnormandin',
     author_email='bill@pokeybill.us',
-    license='MIT'
+    license='MIT',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Topic :: Software Development',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python 2.7',
+        'Programming Language :: Python 2.7'
+        ],
     packages=find_packages(),
-    install_requires=['lvc-docker','click']
+    install_requires=['docker','click'],
     py_modules=['bftest_cli'],
     entry_points="""
         [console_scripts]
-        dockcli=bftest_cli:default
+        dockcli=cli.dockcli:default
         """,
     )
