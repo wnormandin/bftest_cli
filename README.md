@@ -19,6 +19,7 @@ Options:
 Commands:
   run   attempts to start the docker container...
   stop  attempts to stop the docker container...
+  test  basic functional test to ensure containers...
 ```
 ### Starting/Stopping a Container
 ```
@@ -31,4 +32,12 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 $ dockcli stop funky_aardvark
 $ docker ps -a
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+$ python dockcli.py test
+[*] Testing docker container creation/removal
+[*] Your app is running on http://127.0.0.1:8888
+[*] Ensuring we can communicate with the containerized application
+        {"result": "hello world"}
+[*] Container funky_aardvark stopped
+[*] Test succeeded
 ```

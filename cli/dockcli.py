@@ -2,10 +2,11 @@
 # image stored in a dockerhub registry - 'pokeybill/bftest'
 
 import click
+from click.testing import CliRunner
 import docker
 import sys
-import json
 import time
+import requests
 
 this = sys.modules[__name__]
 BASE_URL = 'unix://var/run/docker.sock'
@@ -28,6 +29,7 @@ def run(container):
         result = health_check(container)
     except docker.errors.APIError as e:
         click.echo('[!] Docker API Error: {}'.format(e[0]))
+        sys.exit(1)
 
 @click.command()
 @click.argument('container')
@@ -41,9 +43,49 @@ def stop(container):
         this.client.prune_containers()
     except docker.errors.APIError as e:
         click.echo('[!] Error stopping container: {}'.format(e[0]))
+        sys.exit(1)
+
+
+@click.command()
+def test():
+
+    """ basic functional test to ensure containers can be managed """
+
+    click.echo('[*] Testing docker container creation/removal')
+    cont_name = 'funky_aardvark'
+
+    try:
+        runner = CliRunner()
+
+        # Test the RUN command
+        result = runner.invoke(run, [cont_name])
+        assert result.exit_code == 0, '[!] Application START failed'
+        assert 'Your app is running on' in result.output, \
+               '[!] Unexpected output: {}'.format(result.output)
+        click.echo(result.output.strip('\n'))
+
+        # Test container access
+        click.echo('[*] Ensuring we can communicate with the containerized application')
+        result = requests.get('http://127.0.0.1:8888/hello')
+        assert result.status_code == 200, \
+               '[!] Unexpected HTTP response: {}'.format(result.status_code)
+        click.echo('\t{}'.format(result.text))
+
+        # Test the STOP command
+        result = runner.invoke(stop, [cont_name])
+        assert result.exit_code == 0, '[!] Application STOP failed'
+        click.echo('[*] Container {} stopped'.format(cont_name))
+    except requests.exceptions.ConnectionError as e:
+        click.echo('[!] Failed to communicate with the application')
+        click.echo(e[0])
+    except AssertionError as e:
+        click.echo('[*] Test failed - {}'.format(e))
+    else:
+        click.echo('[*] Test succeeded')
 
 default.add_command(run)
 default.add_command(stop)
+default.add_command(test)
 
 # Functions start here
 def health_check(inst_name):
@@ -75,7 +117,10 @@ def start_container(inst_name):
                         REGISTRY,
                         detach=False,
                         name=inst_name,
-                        ports=[8888]
+                        ports=[8888],
+                        host_config=this.client.create_host_config(
+                            port_bindings={8888: ('127.0.0.1',8888)}
+                            ),
                         )
     this.client.start(inst_name)
 
