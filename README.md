@@ -1,5 +1,11 @@
 ## dockcli installation and usage
 
+### Requirements
+```
+docker-engine version 1.12+ is required for HEALTHCHECK
+sudo access may be required when invoking the docker API depending on user permissions
+```
+
 ### Installation
 Installation is recommended within virtualenv
 ```
