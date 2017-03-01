@@ -25,7 +25,7 @@ def run(container):
     """ attempts to start the docker container specified """
 
     try:
-        this.client = fetch_client()
+        fetch_client()
         this.client.pull(REGISTRY)
         start_container(container)
         result = health_check(container)
@@ -41,7 +41,7 @@ def stop(container):
     """ attempts to stop the docker container specified """
 
     try:
-        this.client = fetch_client()
+        fetch_client()
         this.client.stop(container)
         this.client.remove_container(container)
     except docker.errors.APIError as e:
