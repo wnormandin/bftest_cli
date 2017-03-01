@@ -130,7 +130,12 @@ def start_container(inst_name):
     this.client.start(inst_name)
 
 def fetch_client(base_url=BASE_URL):
-    return docker.APIClient(base_url=base_url, version='1.24')
+    this.client = docker.APIClient(base_url=base_url, version='1.24')
+    try:
+        this.client.version()
+    except requests.exceptions.ConnectionError as e:
+        click.echo('[!] Unable to connect to Docker daemon @ {}'.format(BASE_URL))
+        sys.exit(1)
 
 if __name__=="__main__":
     default()
