@@ -33,7 +33,7 @@ $ dockcli stop funky_aardvark
 $ docker ps -a
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 
-$ python dockcli.py test
+$ dockcli test
 [*] Testing docker container creation/removal
 [*] Your app is running on http://127.0.0.1:8888
 [*] Ensuring we can communicate with the containerized application
