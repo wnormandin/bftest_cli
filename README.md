@@ -1,11 +1,14 @@
 ## dockcli installation and usage
 
 ### Installation
+```
 $ git clone https://github.com/wnormandin/bftest_cli.git
 $ cd bftest_cli
 $ pip install -e .
+```
 
 ### Usage
+```
 Usage: dockcli COMMAND CONTAINER
 
 Options:
@@ -14,8 +17,9 @@ Options:
 Commands:
   run   attempts to start the docker container...
   stop  attempts to stop the docker container...
-
+```
 ### Starting/Stopping a Container
+```
 $ python dockcli.py run funky_aardvark
 [*] Your app is running on http://127.0.0.1:8888
 $ docker ps -a
@@ -25,3 +29,4 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 $ python dockcli.py stop funky_aardvark
 $ docker ps -a
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+```
