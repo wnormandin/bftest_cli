@@ -26,7 +26,7 @@ $ docker ps -a
 CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS                        PORTS               NAMES
 33e22e6b868c        pokeybill/bftest    "/bin/sh -c 'pytho..."   About a minute ago   Up About a minute (healthy)   8888/tcp            funky_aardvark
 
-$ python dockcli.py stop funky_aardvark
+$ dockcli stop funky_aardvark
 $ docker ps -a
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 ```
