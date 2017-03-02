@@ -32,7 +32,7 @@ def run(container):
     except docker.errors.APIError as e:
         click.echo('[!] Docker API Error: {}'.format(e))
         sys.exit(1)
-    except KeyboardInterrupt, SystemExit as e:
+    except KeyboardInterrupt, SystemExit:
         click.echo('[!] Aborting')
 
 @click.command()
@@ -48,7 +48,7 @@ def stop(container):
     except docker.errors.APIError as e:
         click.echo('[!] Error stopping container: {}'.format(e))
         sys.exit(1)
-    except KeyboardInterrupt, SystemExit as e:
+    except KeyboardInterrupt, SystemExit:
         click.echo('[!] Aborting')
 
 
@@ -88,7 +88,7 @@ def test():
         click.echo(e[0])
     except AssertionError as e:
         click.echo('[*] Test failed - {}'.format(e))
-    except KeyboardInterrupt, SystemExit as e:
+    except KeyboardInterrupt, SystemExit:
         click.echo('[!] Aborting')
     else:
         click.echo('[*] Test succeeded')
