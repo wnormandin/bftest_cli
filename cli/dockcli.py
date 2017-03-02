@@ -30,7 +30,7 @@ def run(container):
         start_container(container)
         result = health_check(container)
     except docker.errors.APIError as e:
-        click.echo('[!] Docker API Error: {}'.format(e[0]))
+        click.echo('[!] Docker API Error: {}'.format(e))
         sys.exit(1)
 
 @click.command()
@@ -44,7 +44,7 @@ def stop(container):
         this.client.stop(container)
         this.client.remove_container(container)
     except docker.errors.APIError as e:
-        click.echo('[!] Error stopping container: {}'.format(e[0]))
+        click.echo('[!] Error stopping container: {}'.format(e))
         sys.exit(1)
 
 
