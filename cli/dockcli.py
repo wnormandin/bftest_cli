@@ -31,7 +31,6 @@ def run(container):
         result = health_check(container)
     except docker.errors.APIError as e:
         click.echo('[!] Docker API Error: {}'.format(e[0]))
-        raise
         sys.exit(1)
 
 @click.command()
